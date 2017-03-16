@@ -53,6 +53,19 @@ from_unixtime(unix_timestamp(date_pickup,'yyyyMMdd'),'u')
 ORDER BY dt, dayOfWeek
 
 
+----------> Version Impala
+SELECT 
+to_date(date_pickup) as dt,
+dayofweek(date_pickup) as dayOfWeek,
+count(*)
+FROM epita.taxis_parquet
+GROUP BY to_date(date_pickup),
+dayofweek(date_pickup) 
+ORDER BY dt, dayOfWeek
+
+---------
+
+
 -- Les semaines utile -> weekofyear(date_pickup)
 
 select weekofyear(date_pickup) as week, count(*) as cnt
@@ -69,7 +82,7 @@ FROM epita.taxis
 GROUP BY from_unixtime(unix_timestamp(date_pickup,'yyyyMMdd'),'u')
 
 
--- Trouver les 10 trajets les plus rentables ainsi que leur distances moyennes
+-- Trouver les 10 trajets les plus rentables ainsi que leur distances moyennes 
 
 SELECT concat(neighborhood_pickup," -> " , neighborhood_dropoff) as trajet, avg(distance) as dist_moyenne, sum(total_amount) as somme
 FROM epita.taxis
@@ -78,7 +91,7 @@ ORDER BY somme DESC
 LIMIT 10
 
 
--- Trouver les 10 courses les plus longues ainsi que leur cout
+-- Trouver les 10 courses les plus longues ainsi que leur cout | Tester en Impala
 
 SELECT concat(neighborhood_pickup," -> " , neighborhood_dropoff) as trajet, distance as dist, total_amount as cout
 FROM epita.taxis
@@ -86,7 +99,7 @@ ORDER BY dist DESC
 LIMIT 10
 
 
--- Trouver les 10 trajets moyens les plus longs ainsi que leur cout moyen
+-- Trouver les 10 trajets moyens les plus longs ainsi que leur cout moyen  | Tester en Impala !
 
 SELECT concat(neighborhood_pickup," -> " , neighborhood_dropoff) as trajet, avg(distance) as dist, avg(total_amount) as cout
 FROM epita.taxis
